@@ -44,6 +44,10 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
+  Product findById(String id) {
+    return items.firstWhere((prod) => prod.id == id);
+  }
+
   /* 데이터가 변경될때만 notifyListeners를 연결해서 데이터의
   변경을 바로 반경하도록 한다. 
   */
