@@ -40,12 +40,27 @@ class Products with ChangeNotifier {
     ),
   ];
 
+  var _showFavoritesOnly = false;
+
   List<Product> get items {
+    if (_showFavoritesOnly) {
+      return _items.where((item) => item.isFavorite).toList();
+    }
     return [..._items];
   }
 
   Product findById(String id) {
-    return items.firstWhere((prod) => prod.id == id);
+    return _items.firstWhere((prod) => prod.id == id);
+  }
+
+  void showFavoriteOnly() {
+    _showFavoritesOnly = true;
+    notifyListeners();
+  }
+
+  void showAll() {
+    _showFavoritesOnly = false;
+    notifyListeners();
   }
 
   /* 데이터가 변경될때만 notifyListeners를 연결해서 데이터의
