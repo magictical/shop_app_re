@@ -7,7 +7,7 @@ import '../providers/product.dart';
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context);
+    final product = Provider.of<Product>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -25,14 +25,18 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
-          leading: IconButton(
-            icon: Icon(
-              product.isFavorite ? Icons.favorite : Icons.favorite_border,
+          // 특정 위젯의 하위 위젯과 같이 리빌드되어야 할 경우 적용
+          // 전체는 리빌드는 일반적인 Provider.of<dynamic>(context); 문법사용
+          leading: Consumer<Product>(
+            builder: (ctx, productItem, _) => IconButton(
+              icon: Icon(
+                productItem.isFavorite ? Icons.favorite : Icons.favorite_border,
+              ),
+              onPressed: () {
+                productItem.togglefavoriteStatus();
+              },
+              color: Theme.of(context).accentColor,
             ),
-            onPressed: () {
-              product.togglefavoriteStatus();
-            },
-            color: Theme.of(context).accentColor,
           ),
           title: Text(
             product.title,
