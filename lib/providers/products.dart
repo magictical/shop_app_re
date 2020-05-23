@@ -43,25 +43,29 @@ class Products with ChangeNotifier {
   var _showFavoritesOnly = false;
 
   List<Product> get items {
-    if (_showFavoritesOnly) {
-      return _items.where((item) => item.isFavorite).toList();
-    }
+    // if (_showFavoritesOnly) {
+    //   return _items.where((item) => item.isFavorite).toList();
+    // }
     return [..._items];
+  }
+
+  List<Product> get favoriteItems {
+    return _items.where((prod) => prod.isFavorite).toList();
   }
 
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  void showFavoriteOnly() {
-    _showFavoritesOnly = true;
-    notifyListeners();
-  }
+  // void showFavoriteOnly() {
+  //   _showFavoritesOnly = true;
+  //   notifyListeners();
+  // }
 
-  void showAll() {
-    _showFavoritesOnly = false;
-    notifyListeners();
-  }
+  // void showAll() {
+  //   _showFavoritesOnly = false;
+  //   notifyListeners();
+  // }
 
   /* 데이터가 변경될때만 notifyListeners를 연결해서 데이터의
   변경을 바로 반경하도록 한다. 
