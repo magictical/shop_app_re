@@ -26,6 +26,14 @@ class Cart with ChangeNotifier {
     return _items.length;
   }
 
+  double get totalAmount {
+    var total = 0.0;
+    _items.forEach((key, item) {
+      total += item.price * item.quantity;
+    });
+    return total;
+  }
+
   void addItem(String productId, double price, String title) {
     //  수량체크 이전에 존재하면 수량 증가 없으면 생성
     if (_items.containsKey(productId)) {
