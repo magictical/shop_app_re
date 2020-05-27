@@ -55,8 +55,9 @@ class CartScreen extends StatelessWidget {
           Expanded(
               child: ListView.builder(
             itemBuilder: (ctx, index) => CartItem(
-              // cart의 item가 map 타입이므로 리스트형태로 바꿔줘야 엑세스가 가능함
+              // cart의 item가 map 타입이므로 리스트 형태로 바꿔줘야 엑세스가 가능함
               id: cart.items.values.toList()[index].id,
+              keyId: cart.items.keys.toList()[index],
               title: cart.items.values.toList()[index].title,
               quantity: cart.items.values.toList()[index].quantity,
               price: cart.items.values.toList()[index].price,
