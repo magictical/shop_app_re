@@ -64,4 +64,10 @@ class Cart with ChangeNotifier {
     print(productId);
     notifyListeners();
   }
+
+  // remove cart after order
+  void clear() {
+    _items = {};
+    notifyListeners();
+  }
 }
