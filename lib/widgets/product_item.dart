@@ -50,6 +50,22 @@ class ProductItem extends StatelessWidget {
             ),
             onPressed: () {
               cart.addItem(product.id, product.price, product.title);
+              // hide previous snackbar immediately
+              Scaffold.of(context).hideCurrentSnackBar();
+              // show snackbar after onPressed
+              // Scaffold.of.(context) 는 직접 연결된 최상위의 Scaffold의 정보를 참조한다.
+              // 최상위 Scaffold에 drawer가 사용된다면 여기서 사용할 수 있는 원리다.
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(
+                  'Added item to cart!',
+                ),
+                duration: Duration(seconds: 3),
+                action: SnackBarAction(
+                    label: 'UNDO',
+                    onPressed: () {
+                      cart.removeSingleItem(product.id);
+                    }),
+              ));
             },
             color: Theme.of(context).accentColor,
           ),
