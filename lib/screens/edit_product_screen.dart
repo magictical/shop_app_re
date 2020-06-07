@@ -8,6 +8,8 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
+  // TextInputAction.next를 처리하기 위해 FocusNode를 사용한다.
+  final _priceFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +27,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   labelText: 'Title',
                 ),
                 textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) {
+                  FocusScope.of(context).requestFocus(_priceFocusNode);
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Price',
+                ),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                focusNode: _priceFocusNode,
               )
             ],
           ),
