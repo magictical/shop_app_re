@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
+import '../providers/products.dart';
 
 class EditProductScreen extends StatefulWidget {
-  static const routeName = 'edit/product';
+  static const routeName = '/edit-product';
 
   @override
   _EditProductScreenState createState() => _EditProductScreenState();
@@ -16,6 +18,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
+
   var _editedProduct = Product(
     id: null,
     title: '',
@@ -33,7 +36,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void dispose() {
     // turn on validator
-    _form.currentState.validate();
+    // _form.currentState.dispose();
     // prevent memory leaks
     _imageUrlFocusNode.removeListener(_updateImageUrl);
     _priceFocusNode.dispose();
@@ -46,8 +49,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   void _updateImageUrl() {
     if (!_imageUrlFocusNode.hasFocus) {
-      if (_imageUrlController.text.isEmpty ||
-          (!_imageUrlController.text.startsWith('http') &&
+      if ((!_imageUrlController.text.startsWith('http') &&
               !_imageUrlController.text.startsWith('https')) ||
           (!_imageUrlController.text.endsWith('.png') &&
               !_imageUrlController.text.endsWith('.jpg') &&
@@ -64,6 +66,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState.save();
+    Provider.of<Products>(context, listen: false).addProducts(_editedProduct);
+    Navigator.of(context).pop();
   }
 
   @override

@@ -70,7 +70,15 @@ class Products with ChangeNotifier {
   /* 데이터가 변경될때만 notifyListeners를 연결해서 데이터의
   변경을 바로 반경하도록 한다. 
   */
-  addProducts() {
+  addProducts(Product product) {
+    final newProduct = Product(
+      title: product.title,
+      description: product.description,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      id: DateTime.now().toString(),
+    );
+    _items.add(newProduct);
     notifyListeners();
   }
 }
