@@ -91,4 +91,9 @@ class Products with ChangeNotifier {
       print('error no product id found');
     }
   }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
+    notifyListeners();
+  }
 }
