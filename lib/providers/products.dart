@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import './product.dart';
 
@@ -71,6 +74,18 @@ class Products with ChangeNotifier {
   변경을 바로 반경하도록 한다. 
   */
   addProducts(Product product) {
+    const url = 'https://flutter-shop-app-adf19.firebaseio.com/products.json';
+    http.post(
+      url,
+      body: json.encode({
+        'title': product.title,
+        'description': product.description,
+        'imageUrl': product.imageUrl,
+        'price': product.price,
+        'isFavorite': product.isFavorite,
+      }),
+    );
+
     final newProduct = Product(
       title: product.title,
       description: product.description,
