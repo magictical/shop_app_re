@@ -17,6 +17,7 @@ class ProductItem extends StatelessWidget {
           onTap: () {
             Navigator.of(context).pushNamed(
               ProductDetailScreen.routeName,
+              // send arguments to detial screen
               arguments: product.id,
             );
           },
@@ -30,6 +31,7 @@ class ProductItem extends StatelessWidget {
           // 특정 위젯의 하위 위젯과 같이 리빌드되어야 할 경우 적용
           // 전체는 리빌드는 일반적인 Provider.of<dynamic>(context); 문법사용
           leading: Consumer<Product>(
+            // productItem은 Provider<Product>의 파라메터이기 때문에 isFavorite를 참조가능!
             builder: (ctx, productItem, _) => IconButton(
               icon: Icon(
                 productItem.isFavorite ? Icons.favorite : Icons.favorite_border,

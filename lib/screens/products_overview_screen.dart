@@ -26,6 +26,20 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         appBar: AppBar(
           title: Text('MyShop'),
           actions: <Widget>[
+            Consumer<Cart>(
+              builder: (_, cart, ch) => Badge(
+                child: ch,
+                value: cart.itemCount.toString(),
+              ),
+              // 빌더 밖에 있기때문에 리빌드되지 않음
+              // 아이콘 버튼은 업데이트 될일이 없기때문에 이렇게 밖으로 빼는게 최적화
+              child: IconButton(
+                icon: Icon(Icons.shopping_cart),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CartScreen.routeName);
+                },
+              ),
+            ),
             PopupMenuButton(
               onSelected: (FilterOptions selectedValue) {
                 setState(() {
@@ -49,20 +63,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   value: FilterOptions.All,
                 ),
               ],
-            ),
-            Consumer<Cart>(
-              builder: (_, cart, ch) => Badge(
-                child: ch,
-                value: cart.itemCount.toString(),
-              ),
-              // 빌더 밖에 있기때문에 리빌드되지 않음
-              // 아이콘 버튼은 업데이트 될일이 없기때문에 이렇게 밖으로 빼는게 최적화
-              child: IconButton(
-                icon: Icon(Icons.shopping_cart),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(CartScreen.routeName);
-                },
-              ),
             ),
           ],
         ),

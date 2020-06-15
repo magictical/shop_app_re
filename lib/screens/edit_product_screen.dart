@@ -17,6 +17,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _descriptionFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
+  // 현재의 Form state => 저장하거나 valid가 통과인지 확인할때 활용가능
   final _form = GlobalKey<FormState>();
 
   var _editedProduct = Product(
