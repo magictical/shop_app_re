@@ -91,51 +91,50 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
-    if (!isValid) {
-      return;
-    }
-    _form.currentState.save();
-    setState(() {
-      _isLoading = true;
-    });
-    if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct.id, _editedProduct);
+    try {
+      if (!isValid) {
+        return;
+      }
+      _form.currentState.save();
       setState(() {
-        _isLoading = false;
+        _isLoading = true;
       });
-      Navigator.of(context).pop();
-    } else {
-      Provider.of<Products>(context, listen: false)
-          .addProducts(_editedProduct)
-          .catchError((err) {
-        print('scree mes here');
-        print(err);
-        return showDialog<Null>(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text('An error occurred'),
-            content: Text('something went wrong! :('),
-            actions: <Widget>[
-              FlatButton(
-                  child: Text('Okay'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }),
-            ],
-          ),
-        );
-      }).then((_) {
+      if (_editedProduct.id != null) {
+        Provider.of<Products>(context, listen: false)
+            .updateProduct(_editedProduct.id, _editedProduct);
         setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
+      } else {
+        await Provider.of<Products>(context, listen: false)
+            .addProducts(_editedProduct);
+      }
+    } catch (err) {
+      return await showDialog<Null>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('An error occurred'),
+          content: Text('something went wrong! :('),
+          actions: <Widget>[
+            FlatButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+          ],
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
       });
+      Navigator.of(context).pop();
     }
-    // Navigator.of(context).pop();
   }
+  // Navigator.of(context).pop();
 
   @override
   Widget build(BuildContext context) {
