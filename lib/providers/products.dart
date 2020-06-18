@@ -73,8 +73,19 @@ class Products with ChangeNotifier {
   /* 데이터가 변경될때만 notifyListeners를 연결해서 데이터의
   변경을 바로 반경하도록 한다. 
   */
+
+  Future<void> fetchAndProducts() async {
+    const url = 'https://flutter-shop-app-adf19.firebaseio.com/products.json';
+    try {
+      final response = await http.get(url);
+      print(json.decode(response.body));
+    } catch (error) {
+      throw error;
+    }
+  }
+
   Future<void> addProducts(Product product) async {
-    const url = 'https://flutter-shop-app-adf19.firebaseio.com/products.';
+    const url = 'https://flutter-shop-app-adf19.firebaseio.com/products.json';
     try {
       final response = await http.post(url,
           body: json.encode({
