@@ -46,7 +46,9 @@ class Products with ChangeNotifier {
 
   final String authTokens;
 
-  Products(this.authTokens, this._items);
+  final String userId;
+
+  Products(this.authTokens, this.userId, this._items);
 
   var _showFavoritesOnly = false;
 
@@ -80,7 +82,7 @@ class Products with ChangeNotifier {
   */
 
   Future<void> fetchAndProducts() async {
-    final url =
+    var url =
         'https://flutter-shop-app-adf19.firebaseio.com/products.json?auth=$authTokens';
     try {
       final response = await http.get(url);
@@ -89,6 +91,11 @@ class Products with ChangeNotifier {
       if (extractedata == null) {
         return;
       }
+      url =
+          'https://flutter-shop-app-adf19.firebaseio.com/userFavorites/$userId.json?auth=$authTokens';
+      final favoriteResponse = await http.get(url);
+      final favData = json.decode(favoriteResponse.body);
+
       final List<Product> loadedProducts = [];
       extractedata.forEach((prodId, prodData) {
         loadedProducts.add((Product(
@@ -96,6 +103,8 @@ class Products with ChangeNotifier {
           title: prodData['title'],
           description: prodData['description'],
           price: prodData['price'],
+          // ?? false 부분은 favData[prodId]가 null일 경우 false조건을 준다는것
+          isFavorite: favData == null ? false : favData[prodId] ?? false,
           imageUrl: prodData['imageUrl'],
         )));
       });
@@ -116,7 +125,6 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isFavorite': product.isFavorite,
           }));
       final newProduct = Product(
         title: product.title,

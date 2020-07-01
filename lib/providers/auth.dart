@@ -22,6 +22,10 @@ class Auth with ChangeNotifier {
     return null;
   }
 
+  String get userId {
+    return _userId;
+  }
+
   Future<void> authenticate(String email, String password, urlSegment) async {
     const api_key = 'AIzaSyDq304K-ApdojX5vRwVub__1iOXDXnbZMs';
     final url =
