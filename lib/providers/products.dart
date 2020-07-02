@@ -81,9 +81,13 @@ class Products with ChangeNotifier {
   변경을 바로 반경하도록 한다. 
   */
 
-  Future<void> fetchAndProducts() async {
+  Future<void> fetchAndProducts([bool filterByUser = false]) async {
+    final filteredUrl =
+        filterByUser ? '&orderBy="creatorId"&equalTo="$userId"' : '';
     var url =
-        'https://flutter-shop-app-adf19.firebaseio.com/products.json?auth=$authTokens';
+        // url선에서 userId 노드만 탐색함 전체 노드를 탐색해서 서버부하를 줄임
+        // firebase rule에서 index할 수 있도록 해당 노드를 지정 해줘야함
+        'https://flutter-shop-app-adf19.firebaseio.com/products.json?auth=$authTokens$filteredUrl';
     try {
       final response = await http.get(url);
       final extractedata = json.decode(response.body) as Map<String, dynamic>;
@@ -125,6 +129,7 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
+            'creatorId': userId,
           }));
       final newProduct = Product(
         title: product.title,
