@@ -107,7 +107,7 @@ class Products with ChangeNotifier {
           title: prodData['title'],
           description: prodData['description'],
           price: prodData['price'],
-          // ?? false 부분은 favData[prodId]가 null일 경우 false조건을 준다는것
+          // '??' false 부분은 favData[prodId]가 null일 경우 false조건을 준다는것
           isFavorite: favData == null ? false : favData[prodId] ?? false,
           imageUrl: prodData['imageUrl'],
         )));

@@ -21,29 +21,35 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showOnlyFavorites = false;
-  var _isInit = false;
+  var _isInit = true;
   var _isLoading = false;
 
   @override
   void initState() {
-    if (!_isInit) {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Products>(context, listen: false)
-          .fetchAndProducts()
-          .then((_) {
+      Provider.of<Products>(
+        context,
+      ).fetchAndProducts().then((_) {
         setState(() {
           _isLoading = false;
         });
       });
     }
-
-    super.initState();
+    _isInit = false;
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
+    print('rebuild overview');
     return Scaffold(
         appBar: AppBar(
           title: Text('MyShop'),
